@@ -10,6 +10,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import UpdateProduct from "@/views/UpdateProduct.vue";
 import UpdateOrder from "@/views/UpdateOrder.vue";
 import AddProduct from "@/views/AddProduct.vue";
+import FormEdit from "@/views/FormEdit.vue"
 const routes = [
     {
         path: "/nshop",
@@ -69,6 +70,12 @@ const routes = [
         path: "/nshop/admin/addProduct",
         name: "addproduct",
         component: AddProduct,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/nshop/admin/FormEditProduct/:id",
+        name: "formeditproduct",
+        component: FormEdit,
         meta: { requiresAuth: true },
     },
 ];

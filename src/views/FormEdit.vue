@@ -35,35 +35,35 @@
             </div>
 
             <div id="aritcle__infor" class="container">
-                <form @submit.prevent="this.submitAdd()">
+                <form @submit.prevent="this.submitUpdate()">
                     <div class="inforOrder">
 
 
                         <div class="mb-3">
                             <div class="mb-3">
                                 <label for="exampleFormControlInput2" class="form-label">Tên</label>
-                                <input v-model="this.ten" required type="text" class="form-control"
-                                    id="exampleFormControlInput2" name="tensp">
+                                <input required type="text" class="form-control" id="exampleFormControlInput2" name="tensp"
+                                    v-model="this.product.tensp">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput3" class="form-label">Avata</label>
-                                <input v-model="this.avata" required type="text" class="form-control"
-                                    id="exampleFormControlInput3" name="avata">
+                                <input required type="text" class="form-control" id="exampleFormControlInput3" name="avata"
+                                    v-model="this.product.avata">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput4" class="form-label">Giá</label>
-                                <input v-model="this.gia" required type="text" class="form-control"
-                                    id="exampleFormControlInput4" name="giasp">
+                                <input required type="text" class="form-control" id="exampleFormControlInput4" name="giasp"
+                                    v-model="this.product.giasp">
                             </div>
                             <div class="mb-3">
                                 <label for="exampleFormControlInput5" class="form-label">Số lượng sản phẩm</label>
-                                <input v-model="this.soluong" required type="text" class="form-control"
-                                    id="exampleFormControlInput5" name="soluongsp">
+                                <input required type="text" class="form-control" id="exampleFormControlInput5"
+                                    name="soluongsp" v-model="this.product.soluong">
                             </div>
                         </div>
 
                         <div class="d-flex justify-content-around mt-5">
-                            <button class="btn btn-danger" type="submit">Thêm sản phẩm</button>
+                            <button class="btn btn-danger" type="submit">Cập nhật sản phẩm</button>
                         </div>
                         <hr>
                     </div>
@@ -72,7 +72,7 @@
             </div>
 
         </div>
-        
+
         <div>
             <Footer></Footer>
         </div>
@@ -92,32 +92,34 @@ export default {
     },
     data() {
         return {
-            product:[]
+            product: {}
         }
     },
     methods: {
-        async submitAdd() {
-            const inforProduct = {
-                tensp: this.ten,
-                avata: this.avata,
-                giasp: this.gia,
-                soluong: this.soluong
-            }
-            console.log(inforProduct);
+        async submitUpdate() {
+            // console.log(this.product);
             try {
                 // Su dung ham them a cap nhat ben productservice
-                const resultAdd = await ProductService.create(inforProduct);
+                const resultAdd = await ProductService.update(this.$route.params.id,this.product);
                 alert(resultAdd);
             } catch (error) {
-               console.log(error) 
+                console.log(error)
             }
-        }
-    },
-    mounted(){
-        
-    },
-    created(){
+        },
 
+        async retrieveProduct() {
+            // console.log(this.$route.params.id);
+            try {
+                this.product = await ProductService.get(this.$route.params.id);
+                // console.log(this.product);
+            } catch (error) {
+                console.log(error);
+            }
+        },
+
+    },
+    created() {
+        this.retrieveProduct()
     }
 }
 </script>
@@ -171,4 +173,5 @@ export default {
     font-size: 17px;
     font-weight: 400;
     color: red;
-}</style>
+}
+</style>

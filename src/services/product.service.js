@@ -7,16 +7,16 @@ class ProductService {
         return (await this.api.get("/")).data;
     }
     async create(data) {
-        return (await this.api.post("/", data)).data;
+        return (await this.api.post("/admin/addproduct", data)).data;
     }
     // async deleteAll() {
     //     return (await this.api.delete("/")).data;
     // }
     async get(id) {
-        return (await this.api.get(`/${id}`)).data;
+        return (await this.api.get(`/admin/FormEditProduct/${id}`)).data;
     }
     async update(id, data) {
-        return (await this.api.put(`/${id}`, data)).data;
+        return (await this.api.put(`/admin/FormEditProduct/${id}`, data)).data;
     }
     // async delete(id) {
     //     return (await this.api.delete(`/${id}`)).data;

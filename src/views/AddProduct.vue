@@ -106,8 +106,10 @@ export default {
             console.log(inforProduct);
             try {
                 // Su dung ham them a cap nhat ben productservice
-                const resultAdd = await ProductService.create(inforProduct);
-                alert(resultAdd);
+                // const resultAdd = await ProductService.create(inforProduct);
+                alert('resultAdd');
+                // this.$router.go('/nshop/menfashion');
+                this.$router.replace({ path: '/nshop/menfashion' })
             } catch (error) {
                console.log(error) 
             }

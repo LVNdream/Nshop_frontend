@@ -9,10 +9,12 @@ class PaymentService {
     async createOrder(data) {
         return (await this.api.post("/payment", data)).data;
     }
-    // async deleteAll() {
-    //     return (await this.api.delete("/")).data;
-    // }
-
+    async getAllOrderAdmin() {
+        return (await this.api.get("/payment/admin/updateOrder")).data;
+    }
+    async updateOrderAdmin(data) {
+        return (await this.api.put("/payment/admin/updateOrder",data)).data;
+    }
 
     // async get(id) {
     //     return (await this.api.get(`/${id}`)).data;

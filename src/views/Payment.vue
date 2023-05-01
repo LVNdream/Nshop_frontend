@@ -383,6 +383,9 @@ export default {
                 try {
                     const result= await PaymentService.createOrder(inforCustomer);
                     alert(result);
+                    localStorage.removeItem('cartItems');
+                    // this.$router.reload();
+                    this.$router.go(this.$router.currentRoute)
                 } catch (error) {
                     console.log(error);
                 }

@@ -23,10 +23,13 @@
 
             <div class="d-flex justify-content-around mt-3">
                 <p class="tongtien">Tổng tiền:{{ order.tongtien }}</p>
-                <form class="">
-                    <input type="text" class="form-control" name="idhd" :value="order.id" hidden>
-                    <div @click="delelteOrder(order.id, order.trangthai)" class="btn btn-danger btnCanlce_HoaDon">HỦY ĐƠN</div>
-                </form>
+                <div :class="{none_formDelete:order.trangthai!='Cho xac nhan'}">
+                    <form class="">
+                        <input type="text" class="form-control" name="idhd" :value="order.id" hidden>
+                        <div @click="delelteOrder(order.id, order.trangthai)" class="btn btn-danger btnCanlce_HoaDon">HỦY
+                            ĐƠN</div>
+                    </form>
+                </div>
             </div>
             <hr>
         </div>
@@ -37,7 +40,9 @@
 import PaymentService from "../services/payment.servicce";
 export default {
     data() {
-        return
+        return {
+            inforUser: '',
+        }
     },
 
     props: {
@@ -45,22 +50,32 @@ export default {
     },
     methods: {
         async delelteOrder(idhd, trangthai) {
-            if (trangthai == 'Dang giao') {
+            if (trangthai != 'Cho xac nhan') {
                 alert("Don hang dang duoc giao, khong the huy don")
             }
             else {
                 try {
                     const entity = {
-                        idhd:idhd
+                        idhd: idhd
                     }
                     // console.log(idhd,trangthai)
                     const resultDeleteOrder = await PaymentService.deleteOrder(entity);
-                    alert(resultDeleteOrder)
+                    alert(resultDeleteOrder);
+                    this.$router.go(this.$router.currentRoute);
                 } catch (error) {
                     console.log(error);
                 }
             }
+        },
+        getInforUser() {
+            if (JSON.parse(localStorage.getItem('Users'))) {
+                this.inforUser = JSON.parse(localStorage.getItem('Users'));
+                console.log(this.inforUser);
+            }
         }
+    },
+    mounted() {
+        this.getInforUser()
     }
 
 }

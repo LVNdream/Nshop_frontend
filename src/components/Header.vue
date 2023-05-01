@@ -144,13 +144,41 @@
             aria-haspopup="true" aria-expanded="false">
             <i class="fa-solid fa-bars"></i>
           </button>
-          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+
+          <!-- KHi chua Login -->
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="!isLoginAdmin && !isLoginUser">
             <router-link to="/nshop/customerorder">
               <div class="dropdown-item"> Xem đơn hàng </div>
             </router-link>
-            <div @click="logOutUser()" class="dropdown-item" :class="{ 'dropdownHidden': !isLoginUser }"> Đăng xuất</div>
-            <div class="dropdown-item" :class="{ 'dropdownHidden': !isLoginUser }"> Đổi mật khẩu</div>
           </div>
+
+          <!-- Option cho User -->
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="isLoginUser">
+            <router-link to="/nshop/customerorder">
+              <div class="dropdown-item"> Xem đơn hàng </div>
+            </router-link>
+            <div @click="logOutUser()" class="dropdown-item"> Đăng xuất</div>
+            <div class="dropdown-item"> Đổi mật khẩu</div>
+          </div>
+          <!-- option cho admin -->
+
+          <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" v-if="isLoginAdmin">
+            <router-link to="/nshop/admin/updateOrder">
+              <div class="dropdown-item"> Cập nhật đơn hàng </div>
+            </router-link>
+            <router-link to="/nshop/admin/updateProduct">
+              <div class="dropdown-item">Cập nhật sản phẩm</div>
+            </router-link>
+            <router-link to="/nshop/admin/addProduct">
+              <div class="dropdown-item"> Thêm sản phẩm</div>
+            </router-link>
+            <div @click="logOutUser()" class="dropdown-item"> Đăng
+              xuất Admin
+            </div>
+          </div>
+
+
         </div>
 
 
@@ -168,7 +196,8 @@ export default {
   data() {
     return {
       amountItem: 0,
-      isLoginUser: false
+      isLoginUser: false,
+      isLoginAdmin: false
     }
   },
   methods: {
@@ -182,18 +211,22 @@ export default {
         }
       }
     },
-    checkLoginUser() {
+    checkLogin() {
       // console.log(JSON.parse(localStorage.getItem('Users')))
-      if (JSON.parse(localStorage.getItem('Users')) != null) {
+      if (JSON.parse(localStorage.getItem('Users')) != null && JSON.parse(localStorage.getItem('Users')).quyenhan == 1) {
         this.isLoginUser = true;
+      }
+      else if (JSON.parse(localStorage.getItem('Users')) != null && JSON.parse(localStorage.getItem('Users')).quyenhan == 0) {
+        this.isLoginAdmin = true;
       }
     },
 
     logOutUser() {
       const user = JSON.parse(localStorage.getItem('Users'))
-      if (localStorage.getItem('Users') != null && user.quyenhan == 1) {
+      if (localStorage.getItem('Users') != null) {
         localStorage.removeItem('Users');
         this.isLogin = false;
+        this.$router.go(this.$router.currentRoute);
       }
     }
 
@@ -201,7 +234,7 @@ export default {
   },
   mounted() {
     this.totalItem()
-    this.checkLoginUser()
+    this.checkLogin()
   }
 }
 </script>
@@ -677,4 +710,5 @@ header {
 
 .hidden__watchcart {
   display: none;
-}</style>
+}
+</style>

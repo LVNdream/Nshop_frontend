@@ -9,19 +9,21 @@
                 <div class="list-group">
                     <div class="form-floating mb-4">
                         <input v-model="this.userData.email" @blur="isValidateFormLogin()"
-                                    v-bind:class="{ 'is-invalid': errors.email, 'is-valid': errors.valid_email }" type="email" class="form-control size--input-login list-group-item list-group-item-action"
+                            v-bind:class="{ 'is-invalid': errors.email, 'is-valid': errors.valid_email }" type="email"
+                            class="form-control size--input-login list-group-item list-group-item-action"
                             id="floatingInputEmail" name="email" required>
                         <label class="label--text" for="floatingInputEmail">Email</label>
                         <div class="valid-feedback">
                             Bạn đã nhập Email, vui lòng xem lại thông tin trước khi submit!
                         </div>
                         <div class="invalid-feedback">
-                            {{errors.email}}
+                            {{ errors.email }}
                         </div>
                     </div>
                     <div class="form-floating mb-4">
                         <input v-model="this.userData.matkhau" @blur="isValidateFormLogin()"
-                                    v-bind:class="{ 'is-invalid': errors.matkhau, 'is-valid': errors.valid_matkhau }" type="password" class="form-control size--input-login list-group-item list-group-item-action"
+                            v-bind:class="{ 'is-invalid': errors.matkhau, 'is-valid': errors.valid_matkhau }"
+                            type="password" class="form-control size--input-login list-group-item list-group-item-action"
                             id="floatingInputMatkhau" name="matkhau" required>
                         <label class="label--text" for="floatingInputMatkhau">Mật khẩu</label>
                         <div class="valid-feedback">
@@ -107,9 +109,20 @@ export default {
                 const resultLogin = await AccountService.loginAccount(this.userData);
 
                 // console.log(resultLogin.user);
-                localStorage.setItem('Users', JSON.stringify(resultLogin.user));
+                if (resultLogin.isLogin) {
+                    localStorage.setItem('Users', JSON.stringify(resultLogin.user));
+                }
                 // console.log(JSON.parse(localStorage.getItem('Users')))
                 alert(resultLogin.message);
+                if (JSON.parse(localStorage.getItem('Users'))) {
+                    if (JSON.parse(localStorage.getItem('Users')).quyenhan == 1) {
+
+                        this.$router.replace({ path: '/nshop/customerorder' });
+                    }
+                    else if (JSON.parse(localStorage.getItem('Users')).quyenhan == 0) {
+                        this.$router.replace({ path: '/nshop/admin/updateOrder' });
+                    }
+                }
             }
             // else {
             //     alert('Bạn nhập đầy đủ thông tin');

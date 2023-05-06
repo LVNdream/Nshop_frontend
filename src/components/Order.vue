@@ -70,7 +70,7 @@ export default {
         getInforUser() {
             if (JSON.parse(localStorage.getItem('Users'))) {
                 this.inforUser = JSON.parse(localStorage.getItem('Users'));
-                console.log(this.inforUser);
+                // console.log(this.inforUser);
             }
         }
     },

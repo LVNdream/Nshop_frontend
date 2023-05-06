@@ -4,15 +4,16 @@
 
         <div>
             <div id="aritcle__infor" class="container">
+                <div v-if="this.orders.isEmpty">
+                    Bạn chưa có đơn hàng
+                </div>
 
-                <div v-for="order in orders">
+                <div v-for="order in this.orders.arrayOrders" v-else>
                     <Order :order="order"></Order>
                 </div>
 
 
-                <div v-if="this.orders == true">
-                    Bạn chưa có đơn hàng
-                </div>
+               
 
             </div>
 
@@ -51,7 +52,7 @@ export default {
         async getAllOrders(email) {
             try {
                 this.orders = await PaymentService.getAllOrder(email);
-                // console.log(this.orders);
+                console.log(this.orders);
             } catch (error) {
                 console.log(error);
             }

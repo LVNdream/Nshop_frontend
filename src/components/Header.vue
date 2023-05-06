@@ -84,18 +84,19 @@
         </ul>
         <div class="nav__icons">
           <div class="icon__selector icon__search">
-            <div class="search" id="search">
+            <div class="search" id="search" @click="hiddenSearch()" >
               <i class="fa-solid fa-magnifying-glass"></i>
             </div>
-            <div class="formsearch" id="formsearch">
+            <div class="formsearch" v-bind:class="{'formsearch_hidden':isHidden}" id="formsearch">
               <h3>Tìm kiếm</h3>
               <hr>
               <div class="formsearch__input">
-                <input type="text" id="inputsearch5" class="form-control" placeholder="Nhập sản phẩm cần tìm... ">
-                <i class="fa-solid fa-magnifying-glass search-in-input"></i>
+                <input type="text" v-model="this.tensp" id="inputsearch5" class="form-control" placeholder="Nhập sản phẩm cần tìm... ">
+                <!-- <i class="fa-solid fa-magnifying-glass search-in-input" @click="test()"></i> -->
+                <div class="search-in-input" @click="filterByName()">Tìm</div>
               </div>
               <div id="cancle--search">
-                <p class="text--cancle--search">x</p>
+                <p class="text--cancle--search" @click="hiddenSearch()">x</p>
               </div>
             </div>
           </div>
@@ -197,7 +198,9 @@ export default {
     return {
       amountItem: 0,
       isLoginUser: false,
-      isLoginAdmin: false
+      isLoginAdmin: false,
+      isHidden:true,
+      tensp:''
     }
   },
   methods: {
@@ -228,6 +231,13 @@ export default {
         this.isLogin = false;
         this.$router.go(this.$router.currentRoute);
       }
+    },
+    hiddenSearch(){
+      this.isHidden=!this.isHidden
+    },
+    filterByName(){
+      // console.log(this.tensp);
+      this.$emit('filterByName',this.tensp)
     }
 
 
@@ -408,7 +418,6 @@ header {
 .formsearch {
   position: absolute;
   height: 150px;
-  display: none;
   width: 450px;
   background-color: #fff;
   border: #00000075 2px solid;
@@ -416,6 +425,9 @@ header {
   top: 95px;
   right: 150px;
   z-index: 99999999;
+}
+.formsearch_hidden{
+  display:none;
 }
 
 .show__formsearch {

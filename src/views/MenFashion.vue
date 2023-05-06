@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header v-if = "reload" ></Header>
+    <Header v-if = "reload" @filterByName="filterProductByName" ></Header>
     <div class="frame--intruduce">
       <!-- <img class="framepicture__picturemain" src="img/slide_1_img.webp" alt="loading"> -->
     </div>
@@ -101,6 +101,20 @@ export default {
       this.$nextTick(()=>{
         this.reload=true
       })
+    },
+    async filterProductByName(tensp){
+      // console.log(tensp)
+      const dataFilter = {
+        tensp:tensp
+      }
+      console.log(dataFilter)
+      try {
+        const productByName = await ProductService.filterByNameProduct(dataFilter);
+        console.log(productByName,123);
+        this.products=productByName
+      } catch (error) {
+        console.log(error);
+      }
     }
   },
   created() {

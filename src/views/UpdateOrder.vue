@@ -6,9 +6,19 @@
         </div>
 
         <div>
-            <div id="aritcle__infor" class="container">
 
-                <div v-for="order in allOrders">
+            <div id="aritcle__infor" class="container">
+                <div class="d-flex filter_order mb-2">
+                    <form @submit.prevent="submitFilterOrderByDate()">
+                        <input type="date" v-model="this.start" name="start">
+                        <input type="date" v-model="this.end" name="end">
+                        <button class="btn-design btn-info btn-sizebtn">Tìm</button>
+                    </form>
+                </div>
+
+                <div v-if="allOrders.isEmpty">Bạn chưa có hóa đơn</div>
+
+                <div v-for="order in allOrders.arrayOrders" v-else>
                     <div>
                         <div class="inforOrder">
                             <h5 class="idOrder">Mã đơn hàng: {{ order.id }}</h5>
@@ -27,11 +37,11 @@
 
                                 <div>
                                     <button class="btn btn-primary" type="button" data-toggle="collapse"
-                                        :data-target='"#collapse"+order._id' aria-expanded="false"
-                                        :aria-controls='"collapse"+order._id'>
+                                        :data-target='"#collapse" + order._id' aria-expanded="false"
+                                        :aria-controls='"collapse" + order._id'>
                                         Điêu chỉnh trạng thái hóa đơn <i class="fa-solid fa-pen"></i>
                                     </button>
-                                    <div class="collapse mt-2" :id='"collapse"+order._id'>
+                                    <div class="collapse mt-2" :id='"collapse" + order._id'>
                                         <div class="card card-body">
                                             <form @submit.prevent="this.submitUpdateOrder(order._id, order.trangthai)">
                                                 <div>
@@ -114,6 +124,7 @@
 import PaymentService from "../services/payment.servicce";
 import Header from '../components/Header.vue'
 import Footer from '../components/Footer.vue'
+import { all } from "axios";
 export default {
 
     components: {
@@ -124,12 +135,14 @@ export default {
         return {
             allOrders: {},
             // statusUpdate: ''
+            start:'',
+            end:''
         }
     },
     methods: {
         async getAllOrders() {
             try {
-                console.log('123232');
+                // console.log('123232');
                 this.allOrders = await PaymentService.getAllOrderAdmin();
                 // console.log(this.allOrders);
             } catch (error) {
@@ -151,6 +164,20 @@ export default {
                 console.log(error);
             }
             console.log(dataUpdate);
+        },
+        async submitFilterOrderByDate(){
+            const data={
+                start:this.start,
+                end:this.end
+            }
+            try {
+                const allorderByFiltterDate = await PaymentService.fiterOrderByDate(data);
+                console.log(allorderByFiltterDate);
+                this.allOrders=allorderByFiltterDate
+                console.log(this.allOrders)
+            } catch (error) {
+                console.log(error)
+            }
         }
     },
     mounted() {
@@ -220,3 +247,4 @@ export default {
     gap: 25px;
 }
 </style>
+

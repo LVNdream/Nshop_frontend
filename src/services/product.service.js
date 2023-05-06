@@ -18,6 +18,9 @@ class ProductService {
     async update(id, data) {
         return (await this.api.put(`/admin/FormEditProduct/${id}`, data)).data;
     }
+    async filterByNameProduct(data) {
+        return (await this.api.post("/filterByName",data)).data;
+    }
     // async delete(id) {
     //     return (await this.api.delete(`/${id}`)).data;
     // }

@@ -15,7 +15,12 @@ class PaymentService {
     async updateOrderAdmin(data) {
         return (await this.api.put("/payment/admin/updateOrder",data)).data;
     }
+    async fiterOrderByDate(data) {
+        return (await this.api.post("/payment/admin/updateOrder/filterbydate",data)).data;
+    }
 
+
+    
     // async get(id) {
     //     return (await this.api.get(`/${id}`)).data;
     // }
